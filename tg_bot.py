@@ -49,21 +49,7 @@ def get_text_messages(message):
         bot.send_message(message.from_user.id, f'Скриншот находится в папке "снимки экрана"')
     elif 'вверх' in txt:
         pyautogui.hotkey('up')
-
-
-
     else:
         bot.send_message(message.from_user.id, 'Упс, что-то пошло не так...');
-#@bot.message_handler(content_types=['document'])
-#def handle_docs_photo(message):
-#    try:
-#        chat_id = message.chat.id
-#        file_info = bot.get_file(message.document.file_id)
-#        downloaded_file = bot.download_file(file_info.file_path)
-#        src = '"C:\\Users\\user\\OneDrive\\Рабочий стол\\tg\\jhj.jpg"'
-#        with open(src, 'wb') as new_file:
-#            new_file.write(downloaded_file)
-#            bot.reply_to(message, "Пожалуй, я сохраню это")
-#    except Exception as e:
-#        bot.reply_to(message, e)
+
 bot.polling()
