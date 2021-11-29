@@ -1,19 +1,9 @@
 import telebot, os, webbrowser, keyboa, pyautogui, getpass
 from telebot import types
 
-
 USER_NAME = getpass.getuser()
-
-
-def add_to_startup(file_path=""):
-    if file_path == "":
-        file_path = os.path.dirname(os.path.realpath(__file__))
-    bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup' % user
-    with open(bat_path + '\\' + "open.bat", "w+") as bat_file:
-        bat_file.write(r'start "" %s' % file_path)
-
 bot = telebot.TeleBot('1471686666:AAH9XoWWunmeJK_7BdtCShU4nN45aqFF4N0')
-pyautogui.hotkey('ctrl', 'c')
+
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     txt = message.text.split()
@@ -42,13 +32,18 @@ def get_text_messages(message):
             bot.send_message(message.from_user.id, 'Обнаружена ошибка')
     elif 'пробел' in txt:
         pyautogui.press('space')
-    elif '/help' in txt:
-        bot.send_message(message.from_user.id, 'напишите разработчику: @lilm')
     elif 'скрин' in txt:
         pyautogui.hotkey('win', 'prntscrn')
-        bot.send_message(message.from_user.id, f'Скриншот находится в папке "снимки экрана"')
+        path = "C:\\Users\\user\\OneDrive\\Изображения\\Снимки экрана"
+        dir_list = [os.path.join(path, x) for x in os.listdir(path)]
+        if dir_list:
+            date_list = [[x, os.path.getctime(x)] for x in dir_list]
+            sort_date_list = sorted(date_list, key=lambda x: x[1], reverse=True)
+            bot.send_photo(message.from_user.id, open(sort_date_list[0][0], 'rb'))
     elif 'вверх' in txt:
         pyautogui.hotkey('up')
+    elif '/help' in txt:
+        bot.send_message(message.from_user.id, 'скрин - сделает скрин экрана и отправит в чат \nпробел - нажмёт на пробел \nвыключи через ... минут/секунд выключит пк через заданное время  \nнайди (поисковой запрс) - найдет в браузере ваш запрос \nзакрыть ... - закроет приложение')
     else:
         bot.send_message(message.from_user.id, 'Упс, что-то пошло не так...');
 
